@@ -16,7 +16,13 @@ class CreatePaymentTest extends TestCase
     {
         $ticket = factory(Ticket::class)->create();
 
-        $response = $this->json('post', "api/pay{$ticket->id}");
+        $response = $this->json('post', "api/pay/{$ticket->id}", [
+            'credit_card_number' => '4242424242424242',
+            'credit_card_exp' => '09/22',
+            'credit_card_csv' => '123',
+            'credit_card_name' => 'Jim Bean',
+            'amount' => '600',
+        ]);
 
         $response->assertStatus(201);
     }
