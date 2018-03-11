@@ -44,6 +44,8 @@ class TicketsController extends Controller
 
         $ticket = Ticket::create();
 
+        Redis::decr('available_tickets');
+
         return new TicketResource($ticket);
     }
 
