@@ -18,6 +18,6 @@ class PaymentsController extends Controller
     {
         $payment = Payment::create($request->all());
 
-        return new PaymentResource($payment);
+        return PaymentResource::make($payment);
     }
 }

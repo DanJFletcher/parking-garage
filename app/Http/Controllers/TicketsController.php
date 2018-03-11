@@ -27,7 +27,7 @@ class TicketsController extends Controller
 
         Redis::decr('available_tickets');
 
-        return new TicketResource($ticket);
+        return TicketResource::make($ticket);
     }
 
     /**
@@ -38,6 +38,6 @@ class TicketsController extends Controller
      */
     public function show(Ticket $ticket)
     {
-        return new TicketResource($ticket);
+        return TicketResource::make($ticket);
     }
 }
