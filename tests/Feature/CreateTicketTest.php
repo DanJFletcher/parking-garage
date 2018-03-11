@@ -14,7 +14,7 @@ class CreateTicketTest extends TestCase
         $response = $this->json('post', 'api/customers');
 
         $response
-            ->assertStatus(200)
-            ->assertJsonStructure(['id']);
+            ->assertStatus(201)
+            ->assertJsonStructure(['*' => ['ticket_number']]);
     }
 }
