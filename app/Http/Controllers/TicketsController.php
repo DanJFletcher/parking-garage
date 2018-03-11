@@ -15,6 +15,7 @@ class TicketsController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
+     * @throws TicketUnavailableException
      */
     public function store(Request $request)
     {
