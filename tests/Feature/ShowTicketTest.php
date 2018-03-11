@@ -6,6 +6,7 @@ use App\Ticket;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Redis;
 
 class ShowTicketTest extends TestCase
 {
@@ -14,8 +15,12 @@ class ShowTicketTest extends TestCase
     {
         $ticket = factory(Ticket::class)->create();
 
+        Redis::set('available_tickets', 50);
+
         $response = $this->json('get', "api/tickets/{$ticket->id}");
 
-        $response->assertStatus(200);
+        $response->assertStatus(200)
+            ->assertJsonStructure(['*' => ['ticket_number', 'created_at']])
+            ->assertJson(['data' => ['ticket_number' => $ticket->id]]);
     }
 }
