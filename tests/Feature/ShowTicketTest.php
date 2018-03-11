@@ -14,7 +14,7 @@ class ShowTicketTest extends TestCase
     {
         $ticket = factory(Ticket::class)->create();
 
-        $response = $this->json('post', "tickets/{$ticket->id}");
+        $response = $this->json('post', "api/tickets/{$ticket->id}");
 
         $response->assertStatus(200);
     }
