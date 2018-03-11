@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Redis;
 
 class TicketResource extends JsonResource
 {
@@ -17,6 +18,7 @@ class TicketResource extends JsonResource
         return [
             'created_at' => $this->created_at,
             'ticket_number' => $this->id,
+            'available_tickets' => Redis::get('available_tickets'),
         ];
     }
 }
