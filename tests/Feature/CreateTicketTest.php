@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Redis;
 
 class CreateTicketTest extends TestCase
 {
+    use RefreshDatabase;
+
     /** @test */
     public function creating_customer_returns_ticket_number()
     {
