@@ -18,7 +18,8 @@ class CreateTicketTest extends TestCase
 
         $response
             ->assertStatus(201)
-            ->assertJsonStructure(['*' => ['ticket_number']]);
+            ->assertJsonStructure(['*' => ['ticket_number']])
+            ->assertJson(['data' => ['available_tickets' => '49']]);
     }
 
     /** @test */
