@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Ticket;
+use App\Http\Resources\TicketResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 
@@ -38,7 +39,7 @@ class TicketsController extends Controller
     {
         $ticket = Ticket::create();
 
-        return response()->json($ticket);
+        return new TicketResource($ticket);
     }
 
     /**
