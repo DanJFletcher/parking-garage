@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Payment;
+use App\Rate;
 use App\Ticket;
 use App\Http\Resources\PaymentResource;
 use Carbon\Carbon;
@@ -22,7 +23,12 @@ class PaymentsController extends Controller
         $amountDue = '0';
 
         if ($ticket->created_at->diffInHours(Carbon::Now()) < 1) {
-            $amountDue = '300';
+            $amountDue = Rate::ONE_HOUR;
+        } elseif (
+            $ticket->created_at->diffInHours(Carbon::Now()) > 1 &&
+            $ticket->created_at->diffInHours(Carbon::Now()) < 3
+        ) {
+            $amountDue = Rate::THREE_HOUR;
         }
 
         $payment = Payment::create($request->all() + ['amount' => $amountDue]);
