@@ -75,6 +75,19 @@ class CreatePaymentTest extends TestCase
             ->assertJson(['data' => ['amount' => Rate::SIX_HOUR]]);
     }
 
+    /** @test */
+    public function ticket_that_is_more_than_six_hours_costs_all_day_rate()
+    {
+        $ticket = factory(Ticket::class)->create([
+            'created_at' => Carbon::now()->subHours(6)
+        ]);
+
+        $response = $this->json('post', "api/pay/{$ticket->id}", $this->fakeCreditCardData());
+
+        $response->assertStatus(201)
+            ->assertJson(['data' => ['amount' => Rate::ALL_DAY]]);
+    }
+
     private function fakeCreditCardData()
     {
         return [

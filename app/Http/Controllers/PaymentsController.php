@@ -34,6 +34,8 @@ class PaymentsController extends Controller
             $ticket->created_at->diffInHours(Carbon::Now()) < 6
         ) {
             $amountDue = Rate::SIX_HOUR;
+        } elseif ($ticket->created_at->diffInHours(Carbon::Now()) >= 6) {
+            $amountDue = Rate::ALL_DAY;
         }
 
         $payment = Payment::create($request->all() + ['amount' => $amountDue]);
