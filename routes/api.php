@@ -21,4 +21,4 @@ Route::post('customers', 'TicketsController@store');
 
 Route::get('tickets/{ticket}', 'TicketsController@show');
 
-Route::post('pay/{id}', 'PaymentsController@store');
+Route::post('pay/{tickets}', 'PaymentsController@store');
