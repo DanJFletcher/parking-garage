@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Ticket;
 use Illuminate\Database\Eloquent\Model;
 
 class Payment extends Model
@@ -13,4 +14,9 @@ class Payment extends Model
         'credit_card_name',
         'amount',
     ];
+
+    public function ticket()
+    {
+        return $this->belongsTo(Ticket::class);
+    }
 }

@@ -38,6 +38,8 @@ class PaymentsController extends Controller
 
         $payment = Payment::create($request->all() + ['amount' => $amountDue]);
 
+        $ticket->payment()->save($payment);
+
         Redis::incr('available_tickets');
 
         return PaymentResource::make($payment);
