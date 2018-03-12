@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Ticket;
 use App\Rate;
+use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -40,13 +41,25 @@ class CreatePaymentTest extends TestCase
     /** @test */
     public function ticket_that_is_less_than_one_hour_costs_starting_rate()
     {
-        $this->withoutExceptionHandling();
         $ticket = factory(Ticket::class)->create();
 
         $response = $this->json('post', "api/pay/{$ticket->id}", $this->fakeCreditCardData());
 
         $response->assertStatus(201)
             ->assertJson(['data' => ['amount' => Rate::ONE_HOUR]]);
+    }
+
+    /** @test */
+    public function ticket_that_is_between_one_hour_and_three_hours_costs_three_hour_rate()
+    {
+        $ticket = factory(Ticket::class)->create([
+            'created_at' => Carbon::now()->subHours(2)
+        ]);
+
+        $response = $this->json('post', "api/pay/{$ticket->id}", $this->fakeCreditCardData());
+
+        $response->assertStatus(201)
+            ->assertJson(['data' => ['amount' => Rate::THREE_HOUR]]);
     }
 
     private function fakeCreditCardData()
