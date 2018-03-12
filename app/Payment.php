@@ -23,7 +23,7 @@ class Payment extends Model
     /**
      * Payment belongs to ticket.
      *
-     * @return \Illuinate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function ticket()
     {
