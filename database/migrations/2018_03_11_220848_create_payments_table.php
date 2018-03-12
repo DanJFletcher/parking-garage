@@ -19,7 +19,7 @@ class CreatePaymentsTable extends Migration
             $table->string('credit_card_exp');
             $table->string('credit_card_csv');
             $table->string('credit_card_name');
-            $table->integer('amount');
+            $table->integer('amount')->nullable();
             $table->timestamps();
         });
     }
