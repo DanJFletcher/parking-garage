@@ -2,8 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Ticket;
+use App\Payment;
 use App\Rate;
+use App\Ticket;
 use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -22,6 +23,18 @@ class CreatePaymentTest extends TestCase
         $response = $this->json('post', "api/pay/{$ticket->id}", $this->fakeCreditCardData());
 
         $response->assertStatus(201);
+    }
+
+    /** @test */
+    public function new_payment_belongs_to_ticket()
+    {
+        $ticket = factory(Ticket::class)->create();
+
+        $response = $this->json('post', "api/pay/{$ticket->id}", $this->fakeCreditCardData());
+
+        $response->assertStatus(201);
+
+        $this->assertEquals($ticket->id, Payment::find($ticket->id)->ticket_id);
     }
 
     /** @test */
