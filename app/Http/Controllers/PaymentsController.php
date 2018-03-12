@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Payment;
 use App\Http\Resources\PaymentResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redis;
 
 class PaymentsController extends Controller
 {
@@ -17,6 +18,8 @@ class PaymentsController extends Controller
     public function store(Request $request)
     {
         $payment = Payment::create($request->all());
+
+        Redis::incr('available_tickets');
 
         return PaymentResource::make($payment);
     }
