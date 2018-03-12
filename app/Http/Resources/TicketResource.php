@@ -19,6 +19,7 @@ class TicketResource extends JsonResource
             'created_at' => $this->created_at,
             'ticket_number' => $this->id,
             'available_tickets' => Redis::get('available_tickets'),
+            'payment_id' => $this->payment->id ?? null
         ];
     }
 }
