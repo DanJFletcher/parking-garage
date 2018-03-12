@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Payment extends Model
 {
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
         'credit_card_number',
         'credit_card_exp',
@@ -15,6 +20,11 @@ class Payment extends Model
         'amount',
     ];
 
+    /**
+     * Payment belongs to ticket.
+     *
+     * @return \Illuinate\Database\Eloquent\Relations\BelongsTo
+     */
     public function ticket()
     {
         return $this->belongsTo(Ticket::class);
