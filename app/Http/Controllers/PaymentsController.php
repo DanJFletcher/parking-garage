@@ -18,7 +18,7 @@ class PaymentsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Ticket $ticket, Request $request)
+    public function store(Request $request, Ticket $ticket)
     {
         $amountDue = '0';
 
