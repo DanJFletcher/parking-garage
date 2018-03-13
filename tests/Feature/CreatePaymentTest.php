@@ -114,7 +114,8 @@ class CreatePaymentTest extends TestCase
 
         $response = $this->json('post', "api/pay/{$ticket->id}", $this->fakeCreditCardData());
 
-        $response->assertStatus(409);
+        $response->assertStatus(409)
+            ->assertJsonStructure(['errors', 'status']);
     }
 
     private function fakeCreditCardData()
