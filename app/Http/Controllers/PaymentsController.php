@@ -6,6 +6,7 @@ use App\Payment;
 use App\Rate;
 use App\Ticket;
 use App\Http\Resources\PaymentResource;
+use App\Exceptions\TicketNotPayableException;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
@@ -18,8 +19,12 @@ class PaymentsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Ticket $ticket, Request $request)
+    public function store(Request $request, Ticket $ticket)
     {
+        if ($ticket->payment()->exists()) {
+            throw new TicketNotPayableException;
+        }
+
         $amountDue = '0';
 
         if ($ticket->created_at->diffInHours(Carbon::Now()) < 1) {
