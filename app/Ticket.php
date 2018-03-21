@@ -19,6 +19,11 @@ class Ticket extends Model
         return $this->hasOne(Payment::class);
     }
 
+    /**
+     * Calculates and returns the amount owing on a ticket.
+     *
+     * @return int
+     */
     public function getAmountOwingAttribute()
     {
         if ($this->created_at->diffInHours(Carbon::Now()) <= 1) {
