@@ -101,6 +101,23 @@ class CreatePaymentTest extends TestCase
             ->assertJson(['data' => ['amount' => Rate::ALL_DAY]]);
     }
 
+    /** @test */
+    public function ticket_cant_be_charged_more_than_once()
+    {
+        $ticket = factory(Ticket::class)->create([
+            'created_at' => Carbon::now()->subHours(6),
+        ]);
+
+        $payment = factory(Payment::class)->make($this->fakeCreditCardData());
+
+        $ticket->payment()->save($payment);
+
+        $response = $this->json('post', "api/pay/{$ticket->id}", $this->fakeCreditCardData());
+
+        $response->assertStatus(409)
+            ->assertJsonStructure(['errors', 'status']);
+    }
+
     private function fakeCreditCardData()
     {
         return [
