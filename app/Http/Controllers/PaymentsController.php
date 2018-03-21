@@ -21,6 +21,10 @@ class PaymentsController extends Controller
      */
     public function store(Request $request, Ticket $ticket)
     {
+        if ($ticket->payment()->exists()) {
+            throw new TicketNotPayableException;
+        }
+
         $payment = Payment::create($request->all() + ['amount' => $ticket->amount_owing]);
 
         $ticket->payment()->save($payment);
