@@ -12,6 +12,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class TicketTest extends TestCase
 {
     use RefreshDatabase;
+
     /** @test */
     public function can_get_amount_owing_from_ticket()
     {
