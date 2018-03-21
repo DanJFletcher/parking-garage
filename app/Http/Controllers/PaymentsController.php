@@ -22,23 +22,7 @@ class PaymentsController extends Controller
     {
         $amountDue = '0';
 
-        if ($ticket->created_at->diffInHours(Carbon::Now()) < 1) {
-            $amountDue = Rate::ONE_HOUR;
-        } elseif (
-            $ticket->created_at->diffInHours(Carbon::Now()) >= 1 &&
-            $ticket->created_at->diffInHours(Carbon::Now()) < 3
-        ) {
-            $amountDue = Rate::THREE_HOUR;
-        } elseif (
-            $ticket->created_at->diffInHours(Carbon::Now()) >= 3 &&
-            $ticket->created_at->diffInHours(Carbon::Now()) < 6
-        ) {
-            $amountDue = Rate::SIX_HOUR;
-        } elseif ($ticket->created_at->diffInHours(Carbon::Now()) >= 6) {
-            $amountDue = Rate::ALL_DAY;
-        }
-
-        $payment = Payment::create($request->all() + ['amount' => $amountDue]);
+        $payment = Payment::create($request->all() + ['amount' => $ticket->amount_owing]);
 
         $ticket->payment()->save($payment);
 
