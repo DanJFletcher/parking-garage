@@ -20,8 +20,6 @@ class PaymentsController extends Controller
      */
     public function store(Ticket $ticket, Request $request)
     {
-        $amountDue = '0';
-
         $payment = Payment::create($request->all() + ['amount' => $ticket->amount_owing]);
 
         $ticket->payment()->save($payment);
