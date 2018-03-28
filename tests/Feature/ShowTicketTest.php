@@ -22,8 +22,11 @@ class ShowTicketTest extends TestCase
         $response = $this->json('get', "api/tickets/{$ticket->id}");
 
         $response->assertStatus(200)
-            ->assertJsonStructure(['*' => ['ticket_number', 'created_at', 'payment_id']])
-            ->assertJson(['data' => ['ticket_number' => $ticket->id]]);
+            ->assertJsonStructure(['*' => ['ticket_number', 'created_at']])
+            ->assertJson(['data' => [
+                'ticket_number' => $ticket->id,
+                'amount_owing' => $ticket->amount_owing
+            ]]);
     }
 
     /** @test */

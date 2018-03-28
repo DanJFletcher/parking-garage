@@ -66,7 +66,7 @@ class CreatePaymentTest extends TestCase
     public function ticket_that_is_between_one_hour_and_three_hours_costs_three_hour_rate()
     {
         $ticket = factory(Ticket::class)->create([
-            'created_at' => Carbon::now()->subHours(2)
+            'created_at' => Carbon::now()->subHours(3)
         ]);
 
         $response = $this->json('post', "api/pay/{$ticket->id}", $this->fakeCreditCardData());
@@ -79,7 +79,7 @@ class CreatePaymentTest extends TestCase
     public function ticket_that_is_between_three_hour_and_six_hours_costs_six_hour_rate()
     {
         $ticket = factory(Ticket::class)->create([
-            'created_at' => Carbon::now()->subHours(4)
+            'created_at' => Carbon::now()->subHours(6)
         ]);
 
         $response = $this->json('post', "api/pay/{$ticket->id}", $this->fakeCreditCardData());
@@ -92,7 +92,7 @@ class CreatePaymentTest extends TestCase
     public function ticket_that_is_more_than_six_hours_costs_all_day_rate()
     {
         $ticket = factory(Ticket::class)->create([
-            'created_at' => Carbon::now()->subHours(6)
+            'created_at' => Carbon::now()->subHours(7)
         ]);
 
         $response = $this->json('post', "api/pay/{$ticket->id}", $this->fakeCreditCardData());

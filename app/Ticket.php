@@ -2,7 +2,9 @@
 
 namespace App;
 
+use App\Rate;
 use App\Payment;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Ticket extends Model
@@ -15,5 +17,33 @@ class Ticket extends Model
     public function payment()
     {
         return $this->hasOne(Payment::class);
+    }
+
+    /**
+     * Calculates and returns the amount owing on a ticket.
+     *
+     * @return int
+     */
+    public function getAmountOwingAttribute()
+    {
+        if ($this->created_at->diffInHours(Carbon::Now()) <= 1) {
+            return Rate::ONE_HOUR;
+        }
+
+        if (
+            $this->created_at->diffInHours(Carbon::Now()) > 1 &&
+            $this->created_at->diffInHours(Carbon::Now()) <= 3
+        ) {
+            return Rate::THREE_HOUR;
+        }
+
+        if (
+            $this->created_at->diffInHours(Carbon::Now()) > 3 &&
+            $this->created_at->diffInHours(Carbon::Now()) <= 6
+        ) {
+            return Rate::SIX_HOUR;
+        }
+
+        return Rate::ALL_DAY;
     }
 }
