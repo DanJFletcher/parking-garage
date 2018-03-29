@@ -10,6 +10,7 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Foundation\Testing\TestResponse;
 
 class CreatePaymentTest extends TestCase
 {
@@ -18,9 +19,10 @@ class CreatePaymentTest extends TestCase
     /** @test */
     public function can_create_payment_with_ticket_number_and_credit_card()
     {
+        $this->withoutExceptionHandling();
         $ticket = factory(Ticket::class)->create();
 
-        $response = $this->json('post', "api/pay/{$ticket->id}", $this->fakeCreditCardData());
+        $response = $this->payTicket($ticket);
 
         $response->assertStatus(201);
     }
@@ -30,7 +32,7 @@ class CreatePaymentTest extends TestCase
     {
         $ticket = factory(Ticket::class)->create();
 
-        $response = $this->json('post', "api/pay/{$ticket->id}", $this->fakeCreditCardData());
+        $response = $this->payTicket($ticket);
 
         $response->assertStatus(201);
 
@@ -44,7 +46,7 @@ class CreatePaymentTest extends TestCase
 
         $ticket = factory(Ticket::class)->create();
 
-        $response = $this->json('post', "api/pay/{$ticket->id}", $this->fakeCreditCardData());
+        $response = $this->payTicket($ticket);
 
         $response->assertStatus(201);
 
@@ -56,7 +58,7 @@ class CreatePaymentTest extends TestCase
     {
         $ticket = factory(Ticket::class)->create();
 
-        $response = $this->json('post', "api/pay/{$ticket->id}", $this->fakeCreditCardData());
+        $response = $this->payTicket($ticket);
 
         $response->assertStatus(201)
             ->assertJson(['data' => ['amount' => Rate::ONE_HOUR]]);
@@ -69,7 +71,7 @@ class CreatePaymentTest extends TestCase
             'created_at' => Carbon::now()->subHours(3)
         ]);
 
-        $response = $this->json('post', "api/pay/{$ticket->id}", $this->fakeCreditCardData());
+        $response = $this->payTicket($ticket);
 
         $response->assertStatus(201)
             ->assertJson(['data' => ['amount' => Rate::THREE_HOUR]]);
@@ -82,7 +84,7 @@ class CreatePaymentTest extends TestCase
             'created_at' => Carbon::now()->subHours(6)
         ]);
 
-        $response = $this->json('post', "api/pay/{$ticket->id}", $this->fakeCreditCardData());
+        $response = $this->payTicket($ticket);
 
         $response->assertStatus(201)
             ->assertJson(['data' => ['amount' => Rate::SIX_HOUR]]);
@@ -95,7 +97,7 @@ class CreatePaymentTest extends TestCase
             'created_at' => Carbon::now()->subHours(7)
         ]);
 
-        $response = $this->json('post', "api/pay/{$ticket->id}", $this->fakeCreditCardData());
+        $response = $this->payTicket($ticket);
 
         $response->assertStatus(201)
             ->assertJson(['data' => ['amount' => Rate::ALL_DAY]]);
@@ -112,13 +114,13 @@ class CreatePaymentTest extends TestCase
 
         $ticket->payment()->save($payment);
 
-        $response = $this->json('post', "api/pay/{$ticket->id}", $this->fakeCreditCardData());
+        $response = $this->payTicket($ticket);
 
         $response->assertStatus(409)
             ->assertJsonStructure(['errors', 'status']);
     }
 
-    private function fakeCreditCardData()
+    private function fakeCreditCardData() : array
     {
         return [
             'credit_card_number' => '4242424242424242',
@@ -126,5 +128,14 @@ class CreatePaymentTest extends TestCase
             'credit_card_csv' => '123',
             'credit_card_name' => 'Jim Bean',
         ];
+    }
+
+    private function payTicket(Ticket $ticket) : TestResponse
+    {
+        return $this->json(
+            'post',
+            route('tickets.payments.store', $ticket),
+            $this->fakeCreditCardData()
+        );
     }
 }
