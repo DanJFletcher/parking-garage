@@ -19,7 +19,6 @@ class CreatePaymentTest extends TestCase
     /** @test */
     public function can_create_payment_with_ticket_number_and_credit_card()
     {
-        $this->withoutExceptionHandling();
         $ticket = factory(Ticket::class)->create();
 
         $response = $this->payTicket($ticket);
@@ -117,6 +116,17 @@ class CreatePaymentTest extends TestCase
         $response = $this->payTicket($ticket);
 
         $response->assertStatus(409)
+            ->assertJsonStructure(['errors', 'status']);
+    }
+
+    /** @test */
+    public function return_404_when_paying_for_ticket_that_does_not_exist()
+    {
+        $ticket = factory(Ticket::class)->make(['id' => 1]);
+
+        $response = $this->payTicket($ticket);
+
+        $response->assertStatus(404)
             ->assertJsonStructure(['errors', 'status']);
     }
 
