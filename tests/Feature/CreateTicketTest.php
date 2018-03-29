@@ -16,7 +16,7 @@ class CreateTicketTest extends TestCase
     {
         Redis::set('available_tickets', 50);
 
-        $response = $this->json('post', 'api/customers');
+        $response = $this->json('post', route('tickets.store'));
 
         $response
             ->assertStatus(201)
@@ -29,7 +29,7 @@ class CreateTicketTest extends TestCase
     {
         Redis::set('available_tickets', 0);
 
-        $response = $this->json('post', 'api/customers');
+        $response = $this->json('post', route('tickets.store'));
 
         $response
             ->assertStatus(409)
