@@ -27,8 +27,6 @@ class RouteServiceProvider extends ServiceProvider
         //
 
         parent::boot();
-
-        Route::model('tickets', Ticket::class);
     }
 
     /**

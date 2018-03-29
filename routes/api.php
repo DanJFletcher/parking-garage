@@ -13,8 +13,8 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::post('customers', 'TicketsController@store');
+Route::post('tickets', 'TicketsController@store')->name('tickets.store');
 
 Route::get('tickets/{ticket}', 'TicketsController@show');
 
-Route::post('pay/{tickets}', 'PaymentsController@store');
+Route::post('tickets/{ticket}/payments', 'TicketPaymentsController@store')->name('tickets.payments.store');
