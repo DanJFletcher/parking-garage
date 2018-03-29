@@ -11,7 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 
-class PaymentsController extends Controller
+class TicketPaymentsController extends Controller
 {
     /**
      * Store a newly created resource in storage.
