@@ -30,15 +30,13 @@ class Ticket extends Model
             return Rate::ONE_HOUR;
         }
 
-        if (
-            $this->created_at->diffInHours(Carbon::Now()) > 1 &&
+        if ($this->created_at->diffInHours(Carbon::Now()) > 1 &&
             $this->created_at->diffInHours(Carbon::Now()) <= 3
         ) {
             return Rate::THREE_HOUR;
         }
 
-        if (
-            $this->created_at->diffInHours(Carbon::Now()) > 3 &&
+        if ($this->created_at->diffInHours(Carbon::Now()) > 3 &&
             $this->created_at->diffInHours(Carbon::Now()) <= 6
         ) {
             return Rate::SIX_HOUR;
