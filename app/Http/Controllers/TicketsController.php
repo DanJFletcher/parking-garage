@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Redis;
 
 class TicketsController extends Controller
 {
+    public function index(Request $request)
+    {
+        return TicketResource::collection(Ticket::all());
+    }
+
     /**
      * Store a newly created resource in storage.
      *
