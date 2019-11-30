@@ -2,8 +2,8 @@
 
 namespace App;
 
-use Ticket;
 use Illuminate\Database\Eloquent\Model;
+use Ticket;
 
 class Payment extends Model
 {

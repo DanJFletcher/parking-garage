@@ -1,4 +1,4 @@
-FROM php:7.3.6-fpm-stretch
+FROM devilbox/php-fpm-7.4:latest
 
 ARG xdebug=false
 ARG tinker=false

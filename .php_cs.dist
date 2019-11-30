@@ -1,0 +1,28 @@
+<?php
+
+$finder = PhpCsFixer\Finder::create()
+    ->files()
+    ->exclude('vendor')
+    ->in(__DIR__)
+;
+
+return PhpCsFixer\Config::create()
+    ->setUsingCache(false)
+    ->setRules([
+        '@PSR2'                               => true,
+        '@Symfony'                            => true,
+        'no_unused_imports'                   => false, // override @Symfony
+        'align_multiline_comment'             => ['comment_type' => 'phpdocs_only'],
+        'array_syntax'                        => ['syntax' => 'short'],
+        'binary_operator_spaces'              => ['operators' => ['=>' => 'align_single_space']],
+        'blank_line_before_statement'         => ['statements' => ['continue', 'declare', 'return', 'throw', 'try']],
+        'concat_space'                        => ['spacing' => 'one'],
+        'phpdoc_add_missing_param_annotation' => true,
+        'array_indentation'                   => true,
+        'yoda_style'                          => false,
+        'general_phpdoc_annotation_remove'    => [],
+        'phpdoc_no_package'                   => false,
+        'binary_operator_spaces'              => ['operators' => ['=>' => 'single_space']],
+    ])
+    ->setFinder($finder)
+;
