@@ -1,0 +1,7 @@
+app:
+  port: 8080
+database:
+  engine: mysql
+  name: homestead
+  password: secret
+  port: 3306
